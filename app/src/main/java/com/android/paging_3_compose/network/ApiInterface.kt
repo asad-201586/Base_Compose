@@ -13,7 +13,7 @@ interface ApiInterface {
 
     @GET("/v2/beers")
     suspend fun getProducts(
-        @Query("per_page") limit: Int = 20,
+        @Query("per_page") limit: Int = 12,
         @Query("page") page: Int,
     ): ProductResponse
 }

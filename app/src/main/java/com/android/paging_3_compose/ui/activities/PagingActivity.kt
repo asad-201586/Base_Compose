@@ -59,7 +59,8 @@ fun PagingScreen(viewModel: PagingViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF252525))
+            .background(Color(0xFF252525)),
+        contentAlignment = Center
     ) {
         val users = viewModel.getProducts().collectAsLazyPagingItems()
         LazyColumn {
@@ -81,6 +82,16 @@ fun PagingScreen(viewModel: PagingViewModel) {
                     }
                 }
 
+                is LoadState.NotLoading -> Unit
+            }
+
+            when(users.loadState.refresh) {
+                is LoadState.Error -> Unit
+                LoadState.Loading -> {
+                    item {
+                        LoadingItem()
+                    }
+                }
                 is LoadState.NotLoading -> Unit
             }
         }

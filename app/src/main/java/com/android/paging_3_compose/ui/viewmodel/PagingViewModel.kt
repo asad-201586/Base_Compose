@@ -15,7 +15,7 @@ class PagingViewModel @Inject constructor(
     private val appRepo: AppRepo
 ): ViewModel() {
 
-    fun getProducts() = Pager(PagingConfig(pageSize = 20)) {
+    fun getProducts() = Pager(PagingConfig(pageSize = 12)) {
         UsersPagingSource(appRepo)
     }
         .flow
