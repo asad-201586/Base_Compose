@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,6 +32,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -52,18 +56,53 @@ class PagingActivity : ComponentActivity() {
 
 @Composable
 fun PagingScreen(viewModel: PagingViewModel) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(0xFF252525))) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFF252525))
+    ) {
         val users = viewModel.getProducts().collectAsLazyPagingItems()
         LazyColumn {
             items(users.itemCount) { index ->
                 users[index]?.let {
                     ProductItem(it)
                 }
+            }
 
+            when (users.loadState.append) {
+                is LoadState.Error -> {
+                    item {
+
+                    }
+                }
+                LoadState.Loading -> {
+                    item {
+                        LoadingItem()
+                    }
+                }
+
+                is LoadState.NotLoading -> Unit
             }
         }
+    }
+}
+
+@Composable
+fun LoadingItem() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        contentAlignment = Center
+    )
+    {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 16.dp)
+                .height(42.dp)
+                .height(42.dp),
+            strokeWidth = 3.dp
+        )
     }
 }
 
@@ -94,13 +133,13 @@ fun ProductItem(item: ProductResponse.ProductResponseItem? = null) {
                     .padding(end = 8.dp)
             ) {
                 Text(
-                    text = item?.name?:"name",
+                    text = item?.name ?: "name",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
                 Text(
-                    text = item?.description?:"description",
+                    text = item?.description ?: "description",
                     fontSize = 12.sp,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
