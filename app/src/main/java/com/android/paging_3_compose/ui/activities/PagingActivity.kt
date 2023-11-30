@@ -62,7 +62,8 @@ fun PagingScreen(viewModel: PagingViewModel) {
             .background(Color(0xFF252525)),
         contentAlignment = Center
     ) {
-        val users = viewModel.getProducts().collectAsLazyPagingItems()
+        //val users = viewModel.getProducts().collectAsLazyPagingItems()
+        val users = viewModel.productPagingFlow.collectAsLazyPagingItems()
         LazyColumn {
             items(users.itemCount) { index ->
                 users[index]?.let {

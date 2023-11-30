@@ -113,8 +113,9 @@ dependencies {
     implementation ("com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor")
 
     // room database
-    implementation ("androidx.room:room-runtime:2.4.1")
-    kapt ("androidx.room:room-compiler:2.4.1")
+    implementation ("androidx.room:room-ktx:2.5.0")
+    implementation ("androidx.room:room-paging:2.5.0")
+    kapt ("androidx.room:room-compiler:2.5.0")
 
     // paging
     implementation ("androidx.paging:paging-runtime-ktx:3.2.1")
